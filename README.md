@@ -67,6 +67,11 @@ tp_body(ci) = max(op(ci), cp(ci))
 dlestick ci. The bottom is the minimum value between the opening
 price and the closing price.
 bm_body(ci) = min(op(ci), cp(ci))
+#### sli_greater
+>  sli_greater(x, y) returns true when x is slightly greater
+than y in the range from 0.3% to 1%, where the interval is left-closed
+and right-open.
+sli_greater(x, y) ≡ 0.3% ≤ [(x − y)/y] < 1%.
 #### sli_less
 > sli_less(x, y) returns true when x is slightly less than
 y in the range from 0.3% to 1%, where the interval is left-closed and
@@ -83,7 +88,23 @@ us(ci) = hp(ci) − tp_body(ci).
 #### ls
 > ls(ci) returns the height of the lower shadow of a
 candlestick ci.
-ls(ci) = bm_body(ci) − lp(ci). 
+ls(ci) = bm_body(ci) − lp(ci).
+#### small_us
+>  small_us(ci) returns true when the size of the upper
+shadow of the candlestick ci is small.
+small_us(ci) ≡ sli_greater(hp(ci), tp_body(ci)).
+#### no_us
+>  no_us(ci) returns true when the size of the upper
+shadow of the candlestick ci is very small.
+no_us(ci) ≡ ext_near(hp(ci), tp_body(ci)). 
+#### no_ls
+>  no_ls(ci) returns true when the size of the lower
+shadow of the candlestick ci is very small.
+no_ls(ci) ≡ ext_near(lp(ci), bm_body(ci))
+#### ext_near
+> ext_near(x, y) returns true when the difference be-
+tween x and y is less than or equal to 0.3%.
+ext_near(x, y) ≡ [|(x − y)|/max(x, y)] ≤ 0.3%.
 #### hs
 > hs(ci) returns the total height of the shadows of a
 candlestick ci.
