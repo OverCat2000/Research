@@ -51,6 +51,39 @@ op(ci) = opi.
 #### cp
 >  cp(ci) returns the closing price of a candlestick ci.
 cp(ci) = cpi. 
+#### hp
+>  hp(ci) returns the high price of a candlestick ci.
+hp(ci) = hpi.
+#### lp
+>  lp(ci) returns the low price of a candlestick ci.
+lp(ci) = lpi. 
+#### tp_body
+> tp_body(ci) returns the top of the body of a candlestick
+ci. The top is the maximum value between the opening price and the
+closing price.
+tp_body(ci) = max(op(ci), cp(ci)) 
+#### bm_body
+> bm_body(ci) returns the bottom of the body of a can-
+dlestick ci. The bottom is the minimum value between the opening
+price and the closing price.
+bm_body(ci) = min(op(ci), cp(ci))
+#### sli_less
+> sli_less(x, y) returns true when x is slightly less than
+y in the range from 0.3% to 1%, where the interval is left-closed and
+right-open.
+lar_less(x, y) ≡ 0.3% ≤ [(y − x)/x] < 1%
+#### small_body
+> small_body(ci) returns true when the size of candle-
+stick ci is small.
+small_body(ci) ≡ sli_less(bm_body(ci), tp_body(ci)). 
+#### us
+> us(ci) returns the height of the upper shadow of a
+candlestick ci.
+us(ci) = hp(ci) − tp_body(ci). 
+#### ls
+> ls(ci) returns the height of the lower shadow of a
+candlestick ci.
+ls(ci) = bm_body(ci) − lp(ci). 
 #### hs
 > hs(ci) returns the total height of the shadows of a
 candlestick ci.
@@ -74,6 +107,10 @@ pt(TC) = {
 
 
 ### patterns
+#### hammer
+> (len(S) = 1) ∧ (pt(TC) = −1) ∧ small_body(s1)∧
+!no_ls(s1) ∧ (2 ∗ hb(s1) < ls(s1) < 3 ∗ hb(s1))
+∧(small_us(s1) ∨ no_us(s1)).
 #### Advance Block 
 
 > (len(S) = 3) ∧ (pt(TC) = 1) ∧ (∃s1, s2, s3 ∈ S ⇒
