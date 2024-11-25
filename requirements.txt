@@ -1,4 +1,5 @@
 notebook
 torchvision
 mplfinance
-yfinanc
+yfinance
+tensorboard
