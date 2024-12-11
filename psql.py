@@ -4,7 +4,7 @@ import requests
 import time
 from tqdm.auto import tqdm
 
-connection = "postgresql://overcat:overmind@localhost:5432/stockdata"
+connection = "postgresql://overcat:overmind@localhost:5432/stocks"
 
 conn = psycopg2.connect(connection)
 cursor = conn.cursor()

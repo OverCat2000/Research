@@ -9,9 +9,6 @@ services:
     environment:
       POSTGRES_USER: overcat # Replace with your PostgreSQL username
       POSTGRES_PASSWORD: overmind # Replace with your PostgreSQL password
-      POSTGRES_DB: stockdata # Replace with your PostgreSQL database name
+      POSTGRES_DB: stocks # Replace with your PostgreSQL database name
     volumes:
-      - ./postgres_data:/var/lib/postgresql/data # Persistent storage
-
-volumes:
-  postgres_data:
+      - ./data:/var/lib/postgresql/data # Persistent storage
