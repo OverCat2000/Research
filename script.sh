@@ -11,12 +11,15 @@ fi
 
 # Extract the list of stocks
 STOCKS=$(jq -r '.[]' "$PARAM_FILE")  # Extract stocks directly from the array
+YEAR1=2000
 
 # Loop through each stock in the list and run the Python script
 for STOCK in $STOCKS; do
     echo "Running script for stock: $STOCK"
-    python psql.py --stock "$STOCK"
+    python psql.py --stock "$STOCK" --year1 "$YEAR1"
     if [ $? -ne 0 ]; then
         echo "Error: Script failed for stock: $STOCK" >&2
     fi
+
+    sleep 10
 done
