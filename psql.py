@@ -9,6 +9,8 @@ import argparse
 parser = argparse.ArgumentParser(description="Download stock data and store it in a PostgreSQL database.")
 parser.add_argument("--year1", type=int, default=2015, help="Start year for data retrieval (default: 2015).")
 parser.add_argument("--stock", type=str, required=True, help="Stock symbol (e.g., LOFC).")
+parser.add_argument("--schema", type=str, default='public')
+
 
 args = parser.parse_args()
 
@@ -16,6 +18,7 @@ args = parser.parse_args()
 year0 = datetime.date.today().year
 year1 = args.year1
 stock = args.stock
+schema = args.schema
 
 # Database connection
 connection = "postgresql://overcat:overmind@localhost:5432/stocks"
@@ -24,7 +27,7 @@ cursor = conn.cursor()
 
 # Create table if not exists
 cursor.execute(f"""
-    CREATE TABLE IF NOT EXISTS {stock} (
+    CREATE TABLE IF NOT EXISTS {schema}.{stock} (
         timestamp BIGINT PRIMARY KEY,
         open_price FLOAT,
         close_price FLOAT,
@@ -43,6 +46,7 @@ for year in tqdm(range(year0, year1, -1)):
     start = str(int(datetime.datetime(year, 12, 31, 5, 30).timestamp()))
     end = str(int(datetime.datetime(year - 1, 12, 31, 5, 30).timestamp()))
     url = f"https://charts.atradsolutions.com/atsweb/twchart?action=history&format=json&symbol={stock}.N0000&from={end}&to={start}&firstDataRequest=true&resolution=1D"
+    print(url)
     time_diff = end_time - start_time
 
     print(f"Request for year: {year} | Time diff: {time_diff}")
@@ -61,7 +65,7 @@ for year in tqdm(range(year0, year1, -1)):
     start_time = time.time()
     for i in tqdm(range(len(data["t"]))):
         cursor.execute(f"""
-            INSERT INTO {stock} (timestamp, open_price, close_price, high_price, low_price, volume)
+            INSERT INTO {schema}.{stock} (timestamp, open_price, close_price, high_price, low_price, volume)
             VALUES (%s, %s, %s, %s, %s, %s)
             ON CONFLICT (timestamp) DO NOTHING
         """, (

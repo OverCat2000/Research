@@ -21,5 +21,5 @@ for STOCK in $STOCKS; do
         echo "Error: Script failed for stock: $STOCK" >&2
     fi
 
-    sleep 10
+    sleep 20
 done
