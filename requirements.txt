@@ -4,3 +4,4 @@ mplfinance
 yfinance
 tensorboard
 pyts
+ruptures
